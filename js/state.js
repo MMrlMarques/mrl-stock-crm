@@ -16,17 +16,26 @@ export let clientes = [
 export async function loadDatabase() {
     try {
         const resProd = await supabase.from('produtos').select('*').order('id', { ascending: true });
-        if (resProd.data && resProd.data.length > 0) produtos = resProd.data;
+        if (resProd.data && resProd.data.length > 0) {
+            produtos.length = 0;
+            produtos.push(...resProd.data);
+        }
 
         const resMov = await supabase.from('movimentos').select('*').order('id', { ascending: false });
-        if (resMov.data && resMov.data.length > 0) movimentos = resMov.data;
+        if (resMov.data && resMov.data.length > 0) {
+            movimentos.length = 0;
+            movimentos.push(...resMov.data);
+        }
 
         const resCli = await supabase.from('clientes').select('*').order('id', { ascending: true });
-        if (resCli.data && resCli.data.length > 0) clientes = resCli.data;
+        if (resCli.data && resCli.data.length > 0) {
+            clientes.length = 0;
+            clientes.push(...resCli.data);
+        }
 
         return true;
     } catch (err) {
-        console.error("Supabase offline ou indisponível, mantendo dados locais.", err);
+        console.error("Erro ao carregar do Supabase:", err);
         return false;
     }
 }
