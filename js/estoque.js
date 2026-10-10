@@ -52,7 +52,8 @@ export function initEstoqueListeners(updateCallbacks) {
                 .select();
 
             if (errProd) {
-                showToast('Erro ao salvar produto no banco!', 'error');
+                console.error("Erro detalhado do Supabase:", errProd);
+                showToast(`Erro Banco: ${errProd.message}`, 'error');
                 return;
             }
 
