@@ -3,23 +3,23 @@ import { produtos, movimentos, clientes } from './state.js';
 let myChart = null;
 
 export function renderDashboard() {
-    const totalEstoque = produtos.reduce((acc, p) => acc + (p.price * p.stock), 0);
-    const totalProdutos = produtos.reduce((acc, p) => acc + p.stock, 0);
-    const produtosCriticos = produtos.filter(p => p.stock <= 3).length;
+    const totalEstoque = produtos.reduce((acc, p) => acc + (Number(p.price) * Number(p.stock)), 0);
+    const totalProdutos = produtos.reduce((acc, p) => acc + Number(p.stock), 0);
+    const produtosCriticos = produtos.filter(p => Number(p.stock) <= 3).length;
     const totalCrm = clientes.length;
 
-    // Atualiza os cards de métricas
-    const cardValor = document.getElementById('cardTotalValor');
-    const cardProd = document.getElementById('cardTotalProdutos');
-    const cardCrit = document.getElementById('cardEstoqueCritico');
-    const cardCrm = document.getElementById('cardTotalCrm');
+    // Atualiza os cards de métricas utilizando os IDs exatos do index.html
+    const cardValor = document.getElementById('dashTotalValue');
+    const cardProd = document.getElementById('dashTotalProducts');
+    const cardCrit = document.getElementById('dashCriticalStock');
+    const cardCrm = document.getElementById('dashTotalClients');
 
     if (cardValor) cardValor.innerText = `R$ ${totalEstoque.toFixed(2)}`;
     if (cardProd) cardProd.innerText = totalProdutos;
     if (cardCrit) cardCrit.innerText = produtosCriticos;
     if (cardCrm) cardCrm.innerText = totalCrm;
 
-    // Renderiza o Gráfico
+    // Renderiza o Gráfico de Stock por Categoria
     renderChart();
 }
 
@@ -31,7 +31,7 @@ function renderChart() {
     const categories = {};
     produtos.forEach(p => {
         const cat = p.category || 'Geral';
-        categories[cat] = (categories[cat] || 0) + p.stock;
+        categories[cat] = (categories[cat] || 0) + Number(p.stock);
     });
 
     const labels = Object.keys(categories);
