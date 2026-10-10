@@ -1,0 +1,37 @@
+<!-- No Header, ajuste o nav para 4 abas -->
+<nav class="flex gap-1 bg-slate-800 p-1 rounded-xl">
+    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-3 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition">📊 Dashboard</button>
+    <button onclick="switchTab('estoque')" id="tab-estoque" class="px-3 py-2 text-sm font-medium rounded-lg text-slate-300 hover:text-white transition">📦 Estoque</button>
+    <button onclick="switchTab('movimentos')" id="tab-movimentos" class="px-3 py-2 text-sm font-medium rounded-lg text-slate-300 hover:text-white transition">🔄 Movimentos</button>
+    <button onclick="switchTab('crm')" id="tab-crm" class="px-3 py-2 text-sm font-medium rounded-lg text-slate-300 hover:text-white transition">👥 CRM</button>
+</nav>
+
+<!-- No Main, adicione a seção dashboard como a primeira (remova o 'hidden' dela) -->
+<section id="section-dashboard" class="space-y-6">
+    <h2 class="text-xl font-bold text-slate-800">Visão Geral do Negócio</h2>
+    
+    <!-- Cards de Métricas -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Valor Total em Estoque</p>
+            <p id="dashTotalValue" class="text-2xl font-bold text-indigo-600 mt-2">R$ 0,00</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total de Produtos</p>
+            <p id="dashTotalProducts" class="text-2xl font-bold text-slate-800 mt-2">0</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Estoque Crítico (≤ 3 un)</p>
+            <p id="dashCriticalStock" class="text-2xl font-bold text-rose-600 mt-2">0</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Clientes no CRM</p>
+            <p id="dashTotalClients" class="text-2xl font-bold text-emerald-600 mt-2">0</p>
+        </div>
+    </div>
+</section>
+
+<!-- Lembre-se de colocar 'hidden' nas seções de estoque, movimentos e crm no HTML inicial -->
+<section id="section-estoque" class="space-y-6 hidden"> ... </section>
+<section id="section-movimentos" class="space-y-6 hidden"> ... </section>
+<section id="section-crm" class="space-y-6 hidden"> ... </section>
