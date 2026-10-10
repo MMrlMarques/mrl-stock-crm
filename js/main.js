@@ -1,4 +1,4 @@
-import { loadDatabase, renderDashboard } from './dashboard.js'; // ou puxando de state
+import { renderDashboard } from './dashboard.js';
 import { renderEstoque, initEstoqueListeners } from './estoque.js';
 import { renderMovimentos, initMovimentosListeners } from './movimentos.js';
 import { renderCrm, initCrmListeners } from './crm.js';
@@ -48,7 +48,7 @@ window.openMovModal = function(prodId, type) {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Carrega do Supabase antes de renderizar
+    // Carrega os dados do Supabase antes de renderizar a interface
     await loadDatabase();
 
     renderDashboard();
