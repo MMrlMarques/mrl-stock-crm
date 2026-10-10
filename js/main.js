@@ -1,20 +1,21 @@
-import { renderDashboard } from './dashboard.js';
+import { loadDatabase, renderDashboard } from './dashboard.js'; // ou puxando de state
 import { renderEstoque, initEstoqueListeners } from './estoque.js';
 import { renderMovimentos, initMovimentosListeners } from './movimentos.js';
 import { renderCrm, initCrmListeners } from './crm.js';
+import { loadDatabase } from './state.js';
 
 window.switchTab = function(tab) {
     ['dashboard', 'estoque', 'movimentos', 'crm'].forEach(t => {
         const sec = document.getElementById(`section-${t}`);
         const btn = document.getElementById(`tab-${t}`);
         if (sec) sec.classList.add('hidden');
-        if (btn) btn.className = "px-3 py-2 text-sm font-medium rounded-lg text-slate-300 hover:text-white transition";
+        if (btn) btn.className = "px-3.5 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-2";
     });
     
     const targetSec = document.getElementById(`section-${tab}`);
     const targetBtn = document.getElementById(`tab-${tab}`);
     if (targetSec) targetSec.classList.remove('hidden');
-    if (targetBtn) targetBtn.className = "px-3 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition";
+    if (targetBtn) targetBtn.className = "px-3.5 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white shadow transition-all flex items-center gap-2";
 
     if (tab === 'dashboard') {
         renderDashboard();
@@ -46,13 +47,15 @@ window.openMovModal = function(prodId, type) {
     window.openModal('modalMov');
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Carrega do Supabase antes de renderizar
+    await loadDatabase();
+
     renderDashboard();
     renderEstoque();
     renderMovimentos();
     renderCrm();
 
-    // Sincroniza as atualizações entre os módulos e o dashboard
     const refreshAll = () => {
         renderDashboard();
         renderMovimentos();
