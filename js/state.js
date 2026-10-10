@@ -1,27 +1,29 @@
-const defaultProdutos = [
-    { id: 1, name: "Teclado Mecânico RGB", category: "Periféricos", price: 299.00, stock: 15 },
-    { id: 2, name: "Mouse Gamer 16000DPI", category: "Periféricos", price: 150.00, stock: 8 }
-];
+import { supabase } from './supabase.js';
 
-const defaultMovimentos = [
-    { date: "10/10/2026 10:00", type: "Entrada Inicial", prodName: "Teclado Mecânico RGB", qtd: 15, obs: "Cadastro do produto" }
-];
+export let produtos = [];
+export let movimentos = [];
+export let clientes = [];
 
-const defaultClientes = [
-    { id: 1, name: "Carlos Silva", phone: "12991421077", stage: "Negociação" }
-];
+// Função para carregar todos os dados da nuvem ao iniciar o app
+export async function loadDatabase() {
+    try {
+        const [resProd, resMov, resCli] = await Promise.all([
+            supabase.from('produtos').select('*').order('id', { ascending: true }),
+            supabase.from('movimentos').select('*').order('id', { ascending: false }),
+            supabase.from('clientes').select('*').order('id', { ascending: true })
+        ]);
 
-// Correção: Garante que se o localStorage estiver vazio ou com array vazio, puxa os defaults
-const storedProdutos = JSON.parse(localStorage.getItem('mrl_produtos'));
-const storedMovimentos = JSON.parse(localStorage.getItem('mrl_movimentos'));
-const storedClientes = JSON.parse(localStorage.getItem('mrl_clientes'));
+        if (resProd.error) throw resProd.error;
+        if (resMov.error) throw resMov.error;
+        if (resCli.error) throw resCli.error;
 
-export let produtos = (storedProdutos && storedProdutos.length > 0) ? storedProdutos : defaultProdutos;
-export let movimentos = (storedMovimentos && storedMovimentos.length > 0) ? storedMovimentos : defaultMovimentos;
-export let clientes = (storedClientes && storedClientes.length > 0) ? storedClientes : defaultClientes;
+        produtos = resProd.data || [];
+        movimentos = resMov.data || [];
+        clientes = resCli.data || [];
 
-export function saveStorage() {
-    localStorage.setItem('mrl_produtos', JSON.stringify(produtos));
-    localStorage.setItem('mrl_movimentos', JSON.stringify(movimentos));
-    localStorage.setItem('mrl_clientes', JSON.stringify(clientes));
+        return true;
+    } catch (err) {
+        console.error("Erro ao carregar dados do Supabase:", err);
+        return false;
+    }
 }
