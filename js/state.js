@@ -49,7 +49,7 @@ export async function loadDatabase() {
         console.error("Erro ao carregar dados do Supabase:", err);
         return false;
     } finally {
-        // Remove o loader da tela assim que terminar (com ou sem sucesso)
+        // Garante a remoção do loader independentemente de sucesso ou falha
         const loader = document.getElementById('app-loader');
         if (loader) {
             loader.classList.add('opacity-0');
