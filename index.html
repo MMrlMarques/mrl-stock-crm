@@ -6,6 +6,9 @@
     <title>Mrl Stock & CRM • Gestão Inteligente</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF e AutoTable CDNs para exportação em PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
 
@@ -138,12 +141,18 @@
 
         <!-- SEÇÃO MOVIMENTAÇÕES -->
         <section id="section-movimentos" class="space-y-6 hidden">
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div>
                     <h2 class="text-xl font-bold text-white">Histórico de Movimentações</h2>
                     <p class="text-xs text-slate-400">Auditoria completa de entradas e saídas de mercadorias.</p>
                 </div>
-                <button id="btnClearMov" class="text-xs text-rose-400 hover:text-rose-300 font-medium transition-colors">Limpar Histórico</button>
+                <div class="flex items-center gap-3">
+                    <button id="btnExportPdf" class="bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 border border-indigo-500/30 text-xs px-3.5 py-2 rounded-xl font-semibold transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Exportar PDF
+                    </button>
+                    <button id="btnClearMov" class="text-xs text-rose-400 hover:text-rose-300 font-medium transition-colors">Limpar Histórico</button>
+                </div>
             </div>
             <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-sm">
                 <table class="w-full text-left border-collapse text-sm">
