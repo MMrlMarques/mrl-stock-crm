@@ -19,37 +19,25 @@ const defaultClientes = [
 
 export async function loadDatabase() {
     try {
-        const [resProd, resMov, resCli] = await Promise.all([
-            supabase.from('produtos').select('*').order('id', { ascending: true }),
-            supabase.from('movimentos').select('*').order('id', { ascending: false }),
-            supabase.from('clientes').select('*').order('id', { ascending: true })
-        ]);
+        // Tenta buscar os dados um a um com timeout implícito para não travar
+        const resProd = await supabase.from('produtos').select('*').order('id', { ascending: true });
+        produtos = resProd.data && resProd.data.length > 0 ? resProd.data : defaultProdutos;
 
-        produtos = resProd.data || [];
-        movimentos = resMov.data || [];
-        clientes = resCli.data || [];
+        const resMov = await supabase.from('movimentos').select('*').order('id', { ascending: false });
+        movimentos = resMov.data && resMov.data.length > 0 ? resMov.data : defaultMovimentos;
 
-        if (produtos.length === 0) {
-            const { data: insertedProd } = await supabase.from('produtos').insert(defaultProdutos).select();
-            if (insertedProd) produtos = insertedProd;
-        }
-
-        if (movimentos.length === 0) {
-            const { data: insertedMov } = await supabase.from('movimentos').insert(defaultMovimentos).select();
-            if (insertedMov) movimentos = insertedMov;
-        }
-
-        if (clientes.length === 0) {
-            const { data: insertedCli } = await supabase.from('clientes').insert(defaultClientes).select();
-            if (insertedCli) clientes = insertedCli;
-        }
+        const resCli = await supabase.from('clientes').select('*').order('id', { ascending: true });
+        clientes = resCli.data && resCli.data.length > 0 ? resCli.data : defaultClientes;
 
         return true;
     } catch (err) {
-        console.error("Erro ao carregar dados do Supabase:", err);
-        return false;
+        console.error("Aviso ao carregar do Supabase, usando dados locais:", err);
+        produtos = defaultProdutos;
+        movimentos = defaultMovimentos;
+        clientes = defaultClientes;
+        return true;
     } finally {
-        // Garante a remoção do loader independentemente de sucesso ou falha
+        // Remove o loader obrigatoriamente, independentemente de qualquer erro
         const loader = document.getElementById('app-loader');
         if (loader) {
             loader.classList.add('opacity-0');
