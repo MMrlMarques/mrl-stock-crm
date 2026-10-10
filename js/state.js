@@ -11,9 +11,14 @@ const defaultClientes = [
     { id: 1, name: "Carlos Silva", phone: "12991421077", stage: "Negociação" }
 ];
 
-export let produtos = JSON.parse(localStorage.getItem('mrl_produtos')) || defaultProdutos;
-export let movimentos = JSON.parse(localStorage.getItem('mrl_movimentos')) || defaultMovimentos;
-export let clientes = JSON.parse(localStorage.getItem('mrl_clientes')) || defaultClientes;
+// Correção: Garante que se o localStorage estiver vazio ou com array vazio, puxa os defaults
+const storedProdutos = JSON.parse(localStorage.getItem('mrl_produtos'));
+const storedMovimentos = JSON.parse(localStorage.getItem('mrl_movimentos'));
+const storedClientes = JSON.parse(localStorage.getItem('mrl_clientes'));
+
+export let produtos = (storedProdutos && storedProdutos.length > 0) ? storedProdutos : defaultProdutos;
+export let movimentos = (storedMovimentos && storedMovimentos.length > 0) ? storedMovimentos : defaultMovimentos;
+export let clientes = (storedClientes && storedClientes.length > 0) ? storedClientes : defaultClientes;
 
 export function saveStorage() {
     localStorage.setItem('mrl_produtos', JSON.stringify(produtos));
