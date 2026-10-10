@@ -9,25 +9,25 @@ export function renderEstoque() {
     const filtered = produtos.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum produto encontrado.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500">Nenhum produto encontrado.</td></tr>`;
         return;
     }
 
     filtered.forEach(p => {
         tbody.innerHTML += `
-            <tr class="border-b hover:bg-slate-50">
-                <td class="p-3 font-medium text-slate-800">${p.name}</td>
-                <td class="p-3 text-slate-500">${p.category}</td>
-                <td class="p-3 font-semibold text-slate-700">R$ ${Number(p.price).toFixed(2)}</td>
-                <td class="p-3">
-                    <span class="px-2.5 py-1 rounded-full text-xs font-bold ${p.stock <= 3 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">
+            <tr class="hover:bg-slate-900/50 transition-colors">
+                <td class="p-4 font-medium text-white">${p.name}</td>
+                <td class="p-4 text-slate-400 text-xs">${p.category}</td>
+                <td class="p-4 font-semibold text-indigo-400">R$ ${Number(p.price).toFixed(2)}</td>
+                <td class="p-4">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold ${p.stock <= 3 ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}">
                         ${p.stock} un
                     </span>
                 </td>
-                <td class="p-3 text-center space-x-2">
-                    <button data-id="${p.id}" data-type="Entrada" class="btn-mov bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-2.5 py-1.5 rounded font-medium">+ Entrada</button>
-                    <button data-id="${p.id}" data-type="Saída" class="btn-mov bg-amber-600 hover:bg-amber-700 text-white text-xs px-2.5 py-1.5 rounded font-medium">- Saída</button>
-                    <button data-del="${p.id}" class="text-rose-600 hover:underline text-xs">Excluir</button>
+                <td class="p-4 text-center space-x-2">
+                    <button data-id="${p.id}" data-type="Entrada" class="btn-mov bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 text-xs px-2.5 py-1.5 rounded-lg font-medium transition-all">+ Entrada</button>
+                    <button data-id="${p.id}" data-type="Saída" class="btn-mov bg-amber-600/20 hover:bg-amber-600/30 text-amber-400 border border-amber-500/30 text-xs px-2.5 py-1.5 rounded-lg font-medium transition-all">- Saída</button>
+                    <button data-del="${p.id}" class="text-rose-500 hover:text-rose-400 text-xs transition-colors">Excluir</button>
                 </td>
             </tr>
         `;
