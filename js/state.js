@@ -4,7 +4,6 @@ export let produtos = [];
 export let movimentos = [];
 export let clientes = [];
 
-// Dados padrão (Seed) caso o banco esteja vazio
 const defaultProdutos = [
     { name: "Teclado Mecânico RGB", category: "Periféricos", price: 299.00, stock: 15 },
     { name: "Mouse Gamer 16000DPI", category: "Periféricos", price: 150.00, stock: 8 }
@@ -30,19 +29,16 @@ export async function loadDatabase() {
         movimentos = resMov.data || [];
         clientes = resCli.data || [];
 
-        // Se a tabela de produtos estiver vazia, insere os exemplos automaticamente no Supabase
         if (produtos.length === 0) {
             const { data: insertedProd } = await supabase.from('produtos').insert(defaultProdutos).select();
             if (insertedProd) produtos = insertedProd;
         }
 
-        // Se a tabela de movimentos estiver vazia, insere o exemplo
         if (movimentos.length === 0) {
             const { data: insertedMov } = await supabase.from('movimentos').insert(defaultMovimentos).select();
             if (insertedMov) movimentos = insertedMov;
         }
 
-        // Se a tabela de clientes estiver vazia, insere o exemplo
         if (clientes.length === 0) {
             const { data: insertedCli } = await supabase.from('clientes').insert(defaultClientes).select();
             if (insertedCli) clientes = insertedCli;
@@ -52,5 +48,12 @@ export async function loadDatabase() {
     } catch (err) {
         console.error("Erro ao carregar dados do Supabase:", err);
         return false;
+    } finally {
+        // Remove o loader da tela assim que terminar (com ou sem sucesso)
+        const loader = document.getElementById('app-loader');
+        if (loader) {
+            loader.classList.add('opacity-0');
+            setTimeout(() => loader.remove(), 300);
+        }
     }
 }
